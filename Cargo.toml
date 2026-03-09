@@ -14,7 +14,7 @@ description = "A diff library for Rust (fork of similar)"
 repository = "https://github.com/barrettruth/likewise"
 keywords = ["diff", "difference", "patience", "compare", "changes"]
 readme = "README.md"
-exclude = ["assets/*"]
+exclude = ["assets/*", "scripts/*"]
 
 [package.metadata.docs.rs]
 all-features = true

@@ -12,7 +12,7 @@ issues against this fork.
 | [#42](https://github.com/mitsuhiko/similar/pull/42) | WebAssembly WIT bindings | not actionable — stale since 2022, WAPM ecosystem shifted |
 | [#32](https://github.com/mitsuhiko/similar/pull/32) | Add histogram diff algorithm | not actionable — closed incomplete |
 | [#86](https://github.com/mitsuhiko/similar/pull/86) | Make the configuration const compatible | open |
-| [#87](https://github.com/mitsuhiko/similar/pull/87) | Exclude development scripts | open |
+| [#87](https://github.com/mitsuhiko/similar/pull/87) | Exclude development scripts | fixed |
 
 ## Issues
 
