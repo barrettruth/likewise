@@ -297,12 +297,7 @@ impl<Int> IdentifyDistinct<Int>
 where
     Int: Add<Output = Int> + From<u8> + Default + Copy,
 {
-    fn finish(
-        old_seq: Vec<Int>,
-        old_start: usize,
-        new_seq: Vec<Int>,
-        new_start: usize,
-    ) -> Self {
+    fn finish(old_seq: Vec<Int>, old_start: usize, new_seq: Vec<Int>, new_start: usize) -> Self {
         IdentifyDistinct {
             old: OffsetLookup {
                 offset: old_start,

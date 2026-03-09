@@ -100,7 +100,11 @@ pub fn capture_diff_slices_by_deadline<T>(
     deadline: Option<Instant>,
 ) -> Vec<DiffOp> {
     let id = IdentifyDistinct::<u32>::new_by(old, new, &hash, &eq);
-    let mut d = Compact::new(Replace::new(Capture::new()), id.old_lookup(), id.new_lookup());
+    let mut d = Compact::new(
+        Replace::new(Capture::new()),
+        id.old_lookup(),
+        id.new_lookup(),
+    );
     diff_deadline(
         alg,
         &mut d,
