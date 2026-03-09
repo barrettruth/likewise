@@ -357,6 +357,28 @@ fn test_non_string_iter_change() {
 }
 
 #[test]
+fn test_issue_78_delete_new_index() {
+    let a = vec![1, 1, 0, 2];
+    let b = vec![2, 1, 0, 0, 0, 0];
+    let ops = capture_diff_slices(Algorithm::Myers, &a, &b);
+
+    for i in 1..ops.len() {
+        let prev = &ops[i - 1];
+        let op = &ops[i];
+        assert_eq!(
+            op.old_range().start,
+            prev.old_range().end,
+            "old_index gap at op {i}: {prev:?} -> {op:?}"
+        );
+        assert_eq!(
+            op.new_range().start,
+            prev.new_range().end,
+            "new_index gap at op {i}: {prev:?} -> {op:?}"
+        );
+    }
+}
+
+#[test]
 fn test_capture_diff_slices_by_key() {
     #[derive(Debug, Clone)]
     struct Record {
