@@ -31,7 +31,7 @@ issues against this fork.
 | [#46](https://github.com/mitsuhiko/similar/issues/46) | Compiling to WASM | fixed — `wasm32_web_time` feature |
 | [#65](https://github.com/mitsuhiko/similar/issues/65) | Return owned diff with `TextDiff::configure().diff_lines` | fixed — `DiffableStrRef` trait |
 | [#77](https://github.com/mitsuhiko/similar/issues/77) | Typo: "feataure" in docs | fixed (#11) |
-| [#78](https://github.com/mitsuhiko/similar/issues/78) | `DiffOp` has incorrect `new_index` | open |
+| [#78](https://github.com/mitsuhiko/similar/issues/78) | `DiffOp` has incorrect `new_index` | fixed — cursor normalization after `Compact` |
 | [#79](https://github.com/mitsuhiko/similar/issues/79) | `TextDiff::from_lines` freezes on very large diffs | open — partial (deadline system exists) |
 | [#80](https://github.com/mitsuhiko/similar/issues/80) | Continuous Delete operations disassembled | fixed — `Compact` algorithm |
 | [#81](https://github.com/mitsuhiko/similar/issues/81) | Squash/compose two diffs | not actionable — niche, no demand |
