@@ -30,7 +30,7 @@ issues against this fork.
 | [#45](https://github.com/mitsuhiko/similar/issues/45) | Support for `Bytes` from bytes crate | open — partial (`&[u8]` works via `bstr`) |
 | [#46](https://github.com/mitsuhiko/similar/issues/46) | Compiling to WASM | fixed — `wasm32_web_time` feature |
 | [#65](https://github.com/mitsuhiko/similar/issues/65) | Return owned diff with `TextDiff::configure().diff_lines` | fixed — `DiffableStrRef` trait |
-| [#77](https://github.com/mitsuhiko/similar/issues/77) | Typo: "feataure" in docs | open |
+| [#77](https://github.com/mitsuhiko/similar/issues/77) | Typo: "feataure" in docs | fixed |
 | [#78](https://github.com/mitsuhiko/similar/issues/78) | `DiffOp` has incorrect `new_index` | open |
 | [#79](https://github.com/mitsuhiko/similar/issues/79) | `TextDiff::from_lines` freezes on very large diffs | open — partial (deadline system exists) |
 | [#80](https://github.com/mitsuhiko/similar/issues/80) | Continuous Delete operations disassembled | fixed — `Compact` algorithm |
