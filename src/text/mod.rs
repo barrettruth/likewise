@@ -26,6 +26,22 @@ enum Deadline {
     Relative(Duration),
 }
 
+#[cfg(feature = "arbitrary")]
+impl<'a> arbitrary::Arbitrary<'a> for Deadline {
+    fn arbitrary(u: &mut arbitrary::Unstructured<'a>) -> arbitrary::Result<Self> {
+        let duration = Duration::arbitrary(u)?;
+        let now = Instant::now();
+        let instant = if bool::arbitrary(u).unwrap_or(false) {
+            now.checked_add(duration)
+        } else {
+            now.checked_sub(duration)
+        };
+        instant
+            .ok_or(arbitrary::Error::IncorrectFormat)
+            .map(Deadline::Absolute)
+    }
+}
+
 impl Deadline {
     fn into_instant(self) -> Option<Instant> {
         match self {
@@ -39,6 +55,7 @@ impl Deadline {
 ///
 /// Requires the `text` feature.
 #[derive(Clone, Debug)]
+#[cfg_attr(feature = "arbitrary", derive(arbitrary::Arbitrary))]
 pub struct TextDiffConfig {
     algorithm: Algorithm,
     newline_terminated: Option<bool>,
