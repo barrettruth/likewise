@@ -13,6 +13,8 @@ issues against this fork.
 | [#32](https://github.com/mitsuhiko/similar/pull/32) | Add histogram diff algorithm | not actionable — closed incomplete |
 | [#86](https://github.com/mitsuhiko/similar/pull/86) | Make the configuration const compatible | cherry-picked (#13) |
 | [#87](https://github.com/mitsuhiko/similar/pull/87) | Exclude development scripts | fixed (#12) |
+| [#70](https://github.com/mitsuhiko/similar/pull/70) | feat: arbitrary feature, base fuzzing | open |
+| [#76](https://github.com/mitsuhiko/similar/pull/76) | Make crate no_std compatible | open |
 
 ## Issues
 
