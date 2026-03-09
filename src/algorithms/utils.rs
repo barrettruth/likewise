@@ -297,6 +297,24 @@ impl<Int> IdentifyDistinct<Int>
 where
     Int: Add<Output = Int> + From<u8> + Default + Copy,
 {
+    fn finish(
+        old_seq: Vec<Int>,
+        old_start: usize,
+        new_seq: Vec<Int>,
+        new_start: usize,
+    ) -> Self {
+        IdentifyDistinct {
+            old: OffsetLookup {
+                offset: old_start,
+                vec: old_seq,
+            },
+            new: OffsetLookup {
+                offset: new_start,
+                vec: new_seq,
+            },
+        }
+    }
+
     /// Creates an int hasher for two sequences.
     pub fn new<Old, New>(
         old: &Old,
@@ -384,16 +402,95 @@ where
             new_seq.push(id);
         }
 
-        IdentifyDistinct {
-            old: OffsetLookup {
-                offset: old_start,
-                vec: old_seq,
-            },
-            new: OffsetLookup {
-                offset: new_start,
-                vec: new_seq,
-            },
+        Self::finish(old_seq, old_start, new_seq, new_start)
+    }
+
+    /// Creates an int hasher for two slices using custom comparison logic.
+    ///
+    /// Unlike [`new`](Self::new) which requires `Hash + Eq` bounds on the
+    /// elements, this accepts closures for hashing and equality. This enables
+    /// diffing by a subset of fields or with custom semantics.
+    ///
+    /// Internally uses a `HashMap<u64, Vec<...>>` keyed by the raw hash value,
+    /// with linear probing within each bucket via `eq_fn`. This incurs one
+    /// extra hash (the `HashMap`'s own) per element compared to
+    /// [`new`](Self::new), and stores one entry per element rather than per
+    /// distinct value. Both overheads are constant-factor and negligible
+    /// relative to the diff algorithm cost.
+    pub fn new_by<T>(
+        old: &[T],
+        new: &[T],
+        hash_fn: &impl Fn(&T, &mut dyn Hasher),
+        eq_fn: &impl Fn(&T, &T) -> bool,
+    ) -> Self {
+        use std::collections::hash_map::DefaultHasher;
+
+        let mut buckets: HashMap<u64, Vec<(usize, Int)>> = HashMap::new();
+        let mut old_seq = Vec::with_capacity(old.len());
+        let mut new_seq = Vec::with_capacity(new.len());
+        let mut next_id = Int::default();
+        let step = Int::from(1);
+        let old_len = old.len();
+
+        let get_elem = |combined_idx: usize| -> &T {
+            if combined_idx < old_len {
+                &old[combined_idx]
+            } else {
+                &new[combined_idx - old_len]
+            }
+        };
+
+        let hash_elem = |item: &T| -> u64 {
+            let mut hasher = DefaultHasher::new();
+            hash_fn(item, &mut hasher);
+            hasher.finish()
+        };
+
+        for idx in 0..old_len {
+            let item = &old[idx];
+            let h = hash_elem(item);
+            let bucket = buckets.entry(h).or_default();
+            let mut found_id = None;
+            for &(ci, id) in bucket.iter() {
+                if eq_fn(item, get_elem(ci)) {
+                    found_id = Some(id);
+                    break;
+                }
+            }
+            let id = if let Some(id) = found_id {
+                id
+            } else {
+                let id = next_id;
+                next_id = next_id + step;
+                id
+            };
+            bucket.push((idx, id));
+            old_seq.push(id);
         }
+
+        for idx in 0..new.len() {
+            let item = &new[idx];
+            let h = hash_elem(item);
+            let bucket = buckets.entry(h).or_default();
+            let mut found_id = None;
+            for &(ci, id) in bucket.iter() {
+                if eq_fn(item, get_elem(ci)) {
+                    found_id = Some(id);
+                    break;
+                }
+            }
+            let id = if let Some(id) = found_id {
+                id
+            } else {
+                let id = next_id;
+                next_id = next_id + step;
+                id
+            };
+            bucket.push((old_len + idx, id));
+            new_seq.push(id);
+        }
+
+        Self::finish(old_seq, 0, new_seq, 0)
     }
 
     /// Returns a lookup for the old side.

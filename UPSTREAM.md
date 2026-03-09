@@ -23,7 +23,7 @@ issues against this fork.
 | [#19](https://github.com/mitsuhiko/similar/issues/19) | New trait bounds | open |
 | [#24](https://github.com/mitsuhiko/similar/issues/24) | Improved inline highlighting | open — partial (word-level inline exists) |
 | [#25](https://github.com/mitsuhiko/similar/issues/25) | Semantic cleanups for char diffs | open — partial (`Compact` exists) |
-| [#27](https://github.com/mitsuhiko/similar/issues/27) | Custom comparison with `capture_diff_slices_by` | open |
+| [#27](https://github.com/mitsuhiko/similar/issues/27) | Custom comparison with `capture_diff_slices_by` | fixed — `capture_diff_slices_by`, `_by_key` + deadline variants |
 | [#33](https://github.com/mitsuhiko/similar/issues/33) | `Index` trait bound blocks owned values | open |
 | [#39](https://github.com/mitsuhiko/similar/issues/39) | WIT bindings + WAPM | not actionable — packaging, not library |
 | [#44](https://github.com/mitsuhiko/similar/issues/44) | LCS isn't Hunt-McIlroy, possible correctness bug | open |
